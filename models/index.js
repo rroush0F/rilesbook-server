@@ -13,10 +13,7 @@ PostModel.hasMany(CommentModel);
 CommentModel.belongsTo(PostModel)
 
 module.exports = {
-    dbConnection: db,
-    models: {
         UserModel,
         PostModel,
         CommentModel
     }
-};
