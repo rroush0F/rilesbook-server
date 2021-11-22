@@ -3,32 +3,25 @@ const db = require("../db");
 
 const Comments = db.define("comments", {
 
-    id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-    },
-
     body: {
         type: DataTypes.TEXT,
         allowNull: false,
         required: true
     },
 
-    createdDate: {
-        type: DataTypes.STRING,
-        allowNull: false,
+    likes: {
+        type: DataTypes.TEXT,
+        allowNull: false
     },
 
-    createdTime: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    likesCount: {
+    owner: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: false
+    },
+
+    postId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 })
 

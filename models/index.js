@@ -4,11 +4,17 @@ const PostModel = require('./posts');
 const CommentModel = require('./comments')
 
 //! Associations
-UserModel.hasMany(PostModel);
-UserModel.hasMany(CommentModel);
+UserModel.hasMany(PostModel, {
+    foreignKey: "owner"
+});
+UserModel.hasMany(CommentModel, {
+    foreignKey: "owner"
+});
 
 PostModel.belongsTo(UserModel);
-PostModel.hasMany(CommentModel);
+PostModel.hasMany(CommentModel, {
+    foreignKey: "postId"
+});
 
 CommentModel.belongsTo(PostModel)
 

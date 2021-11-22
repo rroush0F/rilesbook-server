@@ -6,6 +6,8 @@ const controllers = require("./controllers");
 
 app.use(Express.json());
 app.use("/user", controllers.userController);
+app.use("/post", controllers.postController);
+app.use("/comment", controllers.commentController);
 
 dbConnection.authenticate()
     .then(() => dbConnection.sync())

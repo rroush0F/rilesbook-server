@@ -1,13 +1,14 @@
 const Express = require('express');
 const { UniqueConstraintError } = require('sequelize/lib/errors');
-const {UserModel } = require("../models/")
+const { UserModel } = require("../models")
 const jwt = require("jsonwebtoken")
 const router = Express.Router();
 const bcrypt = require("bcryptjs");
 const validateJWT = require("../middleware/validate-jwt")
 const AccessControl = require("accesscontrol");
 
-//! Register Endpoint
+
+//! Register Endpoint (FUNCTIONING EP#1)
 
 router.post('/register', async (req, res) => {
     const {email, password, firstName, lastName, location, admin} = req.body.user
@@ -42,7 +43,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-//! Login Endpoint
+//! Login Endpoint (FUNCTIONING EP#2)
 
 router.post("/login", async (req, res) => {
     let { email, password } = req.body.user;
@@ -80,7 +81,7 @@ router.post("/login", async (req, res) => {
     }
 })
 
-//! Delete User Endpoint
+//! Delete User Endpoint (FUNCTIONING EP #3)
 
 router.delete("/delete/loggedInUser", validateJWT, async (req, res) => {
     const userId = req.user.id

@@ -1,39 +1,24 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db");
 
-const Posts = db.define("posts", {
-
-    id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-    },
+const posts = db.define("post", {
 
     body: {
         type: DataTypes.TEXT,
         allowNull: false,
+        required: true
     },
 
-    createdDate: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    createdTime: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    commentsCount: {
+    likes: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: false
     },
 
-    likesCount: {
+    owner: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: false
     },
+
 })
 
-module.exports = Posts;
+module.exports = posts;
