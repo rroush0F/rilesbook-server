@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const router = Express.Router();
 const bcrypt = require("bcryptjs");
 const validateJWT = require("../middleware/validate-jwt")
-const AccessControl = require("accesscontrol");
+const validateAdmin = require("../middleware/validate-admin");
 
 
 //! Register Endpoint (FUNCTIONING EP#1)
@@ -22,7 +22,7 @@ router.post('/register', async (req, res) => {
             admin: admin
         });
         console.log(User)
-        let token = jwt.sign({id: User.id, email: User.email}, process.env.JWT_SECRET, {expiresIn: 60 * 60 *24});
+        let token = jwt.sign({id: User.id}, process.env.JWT_SECRET, {expiresIn: 60 * 60 *24});
         console.log(token)
         res.status(201).json({
             message: "User successfully registered",
@@ -103,5 +103,34 @@ router.delete("/delete/loggedInUser", validateJWT, async (req, res) => {
         })
     }
 })
+
+//! ADMIN 
+//! GET ALL USERS (WORKING EP #13)
+router.get('/admin/allusers', validateAdmin, async (req, res) => {
+    try {
+        const allUsers = await UserModel.findAll();
+        res.status(200).json(allUsers);
+    } catch (err) {
+        res.status(500).json({ error: err});
+    }
+})
+
+//! DELETE A USER BY ID (WORKING EP #14)
+router.delete('/admin/delete/:id', validateAdmin, async(req, res) => {
+    const userId = req.params.id;
+
+    try {
+        const query = await UserModel.destroy({
+            where: {id: userId}
+        });
+        res.status(200).json({
+            mssage: "User Deleted"
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Failed to delete user."
+        });
+    };
+});
 
 module.exports = router;

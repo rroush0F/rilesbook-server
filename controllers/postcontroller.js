@@ -1,6 +1,7 @@
 const Express = require('express');
 const router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
+let validateAdmin = require("../middleware/validate-admin");
 const { PostModel } = require("../models")
 
 //! Create Post Endpoint (WORKING EP #4)
@@ -25,7 +26,7 @@ router.post('/create', validateJWT, async (req, res) => {
 //! Edit Post Endpoint (WORKING! EP #5)
 
 router.put("/update/:id", validateJWT, async (req, res) => {
-    const {body, likes} = req.body.post
+    const {body} = req.body.post
     const postId = req.params.id;
     const ownerId = req.user.id;
 
@@ -37,8 +38,7 @@ router.put("/update/:id", validateJWT, async (req, res) => {
     };
 
     const updatedPost = {
-        body: body,
-        likes: likes
+        body: body
     };
 
     try {
@@ -104,6 +104,23 @@ router.delete("/delete/:id", validateJWT, async (req, res) => {
         res.status(200).json({ message: "Post Deleted."});
     } catch (err) {
         res.status(500).json({ error: err});
+    }
+});
+
+//! ADMIN
+//! DELETE ANY USER'S POST BY ID (WORKING EP #15)
+router.delete("/admin/delete/:id", validateAdmin, async (req, res) => {
+    const postId = req.params.id;
+    try {
+        const query = {
+            where: {
+                id: postId
+            }
+        };
+        await PostModel.destroy(query);
+        res.status(200).json({ message: "User's Post Deleted."});
+    } catch (err) {
+        res.status(500).json ({ error: err });
     }
 });
 

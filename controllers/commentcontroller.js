@@ -2,6 +2,7 @@ const Express = require('express');
 const router = Express.Router();
 const { CommentModel } = require('../models')
 let validateJWT = require("../middleware/validate-jwt");
+let validateAdmin = require("../middleware/validate-admin")
 
 //! FULL CRUD #2
 //! New Comment (WORKING! EP #9)
@@ -88,4 +89,22 @@ router.put('/edit/:id', validateJWT, async (req, res) => {
             res.status(500).json({ error: err});
         }
     });
+
+//! Admin
+//! Delete ANY User's Comment (WORKING EP #16)
+    router.delete("/admin/delete/:id", validateAdmin, async (req, res) => {
+        const commentId = req.params.id;
+        try {
+            const query = {
+                where: {
+                    id: commentId
+                }
+            }
+            await CommentModel.destroy(query);
+            res.status(200).json({ message: "User's Comment Deleted"})
+        } catch (err) {
+            res.status(500).json({ error: err })
+        }
+    })
+
 module.exports = router;
